@@ -2,8 +2,10 @@
 
 namespace Laravel\Scout;
 
-use Algolia\AlgoliaSearch\Config\SearchConfig;
-use Algolia\AlgoliaSearch\SearchClient as Algolia;
+use Algolia\AlgoliaSearch\Configuration\SearchConfig;
+use Algolia\AlgoliaSearch\Api\SearchClient as Algolia;
+use Algolia\AlgoliaSearch\Model\Ingestion\Event;
+use Algolia\AlgoliaSearch\Support\AlgoliaAgent;
 use Algolia\AlgoliaSearch\Support\UserAgent;
 use Exception;
 use Illuminate\Support\Manager;
@@ -39,7 +41,8 @@ class EngineManager extends Manager
     {
         $this->ensureAlgoliaClientIsInstalled();
 
-        UserAgent::addCustomUserAgent('Laravel Scout', Scout::VERSION);
+        // UserAgent::addCustomUserAgent('Laravel Scout', Scout::VERSION);
+        AlgoliaAgent::addAlgoliaAgent('Laravel Scout', 'Laravel Scout', Scout::VERSION);
 
         $config = SearchConfig::create(
             config('scout.algolia.id'),
@@ -61,7 +64,8 @@ class EngineManager extends Manager
         }
 
         if (is_int($batchSize = config('scout.algolia.batch_size'))) {
-            $config->setBatchSize($batchSize);
+            // $config->setBatchSize($batchSize);
+            (new Event())->setBatchSize($batchSize);
         }
 
         return new AlgoliaEngine(Algolia::createWithConfig($config), config('scout.soft_delete'));

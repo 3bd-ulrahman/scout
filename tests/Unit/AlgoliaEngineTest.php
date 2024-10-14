@@ -2,7 +2,7 @@
 
 namespace Laravel\Scout\Tests\Unit;
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Config;
